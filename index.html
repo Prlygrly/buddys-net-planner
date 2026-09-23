@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Large Net Mastery Planner for FarmRPG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #EAF2F1;
+  --surface: #FFFFFF;
+  --surface-2: #DCE8E6;
+  --ink: #12304A;
+  --muted: #4C6577;
+  --line: #C3D4D4;
+  --rope: #9C6F27;
+  --kelp: #2B7453;
+  --buoy: #B9412A;
+  --focus: #2F6FB3;
+  --heat: 43, 116, 83;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1F2E;
+    --surface: #132C43;
+    --surface-2: #1A3955;
+    --ink: #E3EDF1;
+    --muted: #9CB2C1;
+    --line: #27506E;
+    --rope: #E2BC78;
+    --kelp: #6CC096;
+    --buoy: #F2826A;
+    --focus: #8CC0F5;
+    --heat: 108, 192, 150;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1F2E;
+  --surface: #132C43;
+  --surface-2: #1A3955;
+  --ink: #E3EDF1;
+  --muted: #9CB2C1;
+  --line: #27506E;
+  --rope: #E2BC78;
+  --kelp: #6CC096;
+  --buoy: #F2826A;
+  --focus: #8CC0F5;
+  --heat: 108, 192, 150;
+  color-scheme: dark;
+}
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+h1, h2, h3 {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  line-height: 1.15;
+  margin: 0;
+}
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+header.top {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 36px 0 24px;
+}
+h1 { font-size: clamp(2rem, 5vw, 3.1rem); font-weight: 800; letter-spacing: -0.02em; }
+.lede { color: var(--muted); max-width: 60ch; margin: 10px 0 0; }
+.theme-btn {
+  flex: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 999px; padding: 8px 14px; font: inherit; cursor: pointer;
+}
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 3px solid var(--focus); outline-offset: 2px;
+}
+section.step {
+  border-top: 2px solid var(--ink);
+  padding: 22px 0 8px;
+  display: grid; grid-template-columns: 56px 1fr; gap: 0 16px;
+}
+.step-num {
+  font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 2.4rem;
+  line-height: 1; color: var(--rope);
+}
+.step h2 { font-size: 1.45rem; margin-bottom: 6px; }
+.step p { margin: 6px 0; max-width: 72ch; }
+.muted { color: var(--muted); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 8px; }
+.tabs button {
+  font: inherit; border: 1px solid var(--line); background: transparent; color: var(--ink);
+  padding: 6px 12px; border-radius: 6px; cursor: pointer;
+}
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.howto { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; max-width: 72ch; }
+.howto ol { margin: 0; padding-left: 20px; }
+kbd {
+  font-family: inherit; font-weight: 700; font-size: 0.9em;
+  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--surface-2);
+}
+textarea {
+  width: 100%; min-height: 150px; resize: vertical; margin-top: 12px;
+  font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--surface);
+  border: 2px dashed var(--line); border-radius: 8px; padding: 12px;
+}
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 10px; }
+.btn {
+  font: inherit; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 6px; padding: 6px 12px; cursor: pointer;
+}
+.collapsible { display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows .5s ease, opacity .35s ease; }
+.collapsible > div { overflow: hidden; min-height: 0; }
+.collapsible.closed { grid-template-rows: 0fr; opacity: 0; }
+.loaded {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 10px;
+  background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--kelp);
+  border-radius: 0 8px 8px 0; padding: 10px 14px;
+  animation: loadedIn .45s ease both;
+}
+.loaded[hidden] { display: none; }
+.loaded .tick { font-weight: 800; color: var(--kelp); font-size: 1.2rem; }
+.loaded #updateBtn { margin-left: auto; }
+@keyframes loadedIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+#results[hidden] { display: none; }
+#results.reveal { animation: loadedIn .5s ease both; }
+.manual-link { margin: 10px 0 0; }
+.linkish { font: inherit; color: var(--ink); background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.privacy { font-size: 0.9rem; color: var(--muted); }
+.status { margin-top: 12px; display: grid; gap: 8px; }
+.status[hidden] { display: none; }
+.note { border-left: 4px solid var(--kelp); background: var(--surface); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.note.warn { border-left-color: var(--buoy); }
+.note strong { display: block; }
+.settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 8px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+.card h3 { font-size: 1rem; margin-bottom: 6px; }
+label.check { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; cursor: pointer; }
+label.check input { margin-top: 4px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button { white-space: nowrap; font: inherit; border: 0; background: transparent; color: var(--ink); padding: 6px 10px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+input[type="number"] {
+  font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 6px; padding: 4px 8px; width: 7.5em;
+}
+.locs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0 10px; }
+.per-net { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 1.6rem; }
+
+/* Heat grid: the centerpiece */
+.scroll { overflow-x: auto; margin-top: 12px; }
+table.heat { border-collapse: separate; border-spacing: 4px; min-width: 560px; width: 100%; }
+table.heat th { font-weight: 700; text-align: left; font-size: 0.95rem; padding: 4px 8px; white-space: nowrap; }
+table.heat thead th { text-align: center; font-family: "Bricolage Grotesque", sans-serif; }
+table.heat td {
+  text-align: center; border-radius: 6px; padding: 10px 6px; min-width: 76px;
+  font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 1.3rem;
+  background: rgba(var(--heat), 0.06);
+}
+table.heat td.zero { color: var(--muted); font-weight: 500; font-size: 1rem; }
+table.heat td.best { outline: 3px solid var(--rope); outline-offset: -3px; }
+table.heat td small { display: block; font-family: "Atkinson Hyperlegible", sans-serif; font-weight: 400; font-size: 0.72rem; color: var(--muted); }
+.tldr { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 12px 0 14px; }
+.pick { border: 3px solid var(--rope); border-radius: 8px; padding: 10px 12px; background: var(--surface); }
+.pick .b { font-size: 0.9rem; color: var(--muted); }
+.pick .l { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 1.2rem; line-height: 1.2; }
+.pick .n { font-size: 0.95rem; }
+.tldr-note { grid-column: 1 / -1; margin: 0; color: var(--muted); }
+.pick .l .tag { font-family: "Atkinson Hyperlegible", sans-serif; }
+.hidden-block { display: none !important; }
+.legend { font-size: 0.88rem; color: var(--muted); margin-top: 6px; }
+.recs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 16px; }
+.rec { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+.rec .budget { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 1.25rem; }
+.rec .where { font-weight: 700; color: var(--kelp); }
+.rec ul { margin: 6px 0 0; padding-left: 18px; font-size: 0.93rem; }
+.rec .split { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 0.93rem; }
+.tag { display: inline-block; font-size: 0.72rem; font-weight: 700; border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }
+.tag.gm { background: rgba(var(--heat), 0.18); color: var(--kelp); }
+.tag.mm { background: var(--surface-2); color: var(--rope); }
+.tag.nf { background: transparent; color: var(--buoy); border: 1px solid var(--buoy); }
+
+/* Full table */
+.filters { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin-top: 10px; }
+select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+table.list { border-collapse: collapse; width: 100%; min-width: 720px; background: var(--surface); border-radius: 8px; overflow: hidden; }
+table.list th, table.list td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+table.list th { background: var(--surface-2); font-size: 0.9rem; white-space: nowrap; }
+table.list th button { font: inherit; font-weight: 700; color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; }
+table.list td.num, table.list th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.list td.num input { width: 8.5em; text-align: right; }
+table.list tr.done td { color: var(--muted); }
+.alt { font-size: 0.85rem; color: var(--muted); }
+footer { margin-top: 36px; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+footer a { color: inherit; }
+@media (max-width: 600px) {
+  section.step { grid-template-columns: 1fr; }
+  .step-num { font-size: 1.6rem; margin-bottom: 4px; }
+  header.top { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Large Net Mastery Planner</h1>
+      <p class="lede">Paste your FarmRPG mastery page and see how many Grand and Mega Masteries your Large Nets can buy, and where to throw them.</p>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark mode">Dark mode</button>
+  </header>
+
+  <section class="step" aria-labelledby="s1">
+    <div class="step-num" aria-hidden="true">1</div>
+    <div>
+      <h2 id="s1">Copy your mastery page</h2>
+      <div class="loaded" id="loaded" hidden>
+        <span class="tick" aria-hidden="true">✓</span>
+        <span id="loadedText"></span>
+        <button class="btn" id="updateBtn" type="button">Update masteries</button>
+      </div>
+      <div class="collapsible" id="pasteArea"><div>
+      <p>Open <strong>Mastery Progress</strong> in FarmRPG (Home, then Perks, Mastery &amp; More). <strong>Expand every dropdown first</strong>: Tier V, IV, III, II, I, No Tier, and Mega Mastered. Collapsed tiers don't get copied.</p>
+      <div class="tabs" role="tablist" aria-label="Your device">
+        <button role="tab" data-os="win" aria-selected="true">Windows</button>
+        <button role="tab" data-os="mac" aria-selected="false">Mac</button>
+        <button role="tab" data-os="android" aria-selected="false">Android</button>
+        <button role="tab" data-os="ios" aria-selected="false">iPhone / iPad</button>
+      </div>
+      <div class="howto" id="howto" role="tabpanel"></div>
+      <textarea id="paste" placeholder="Paste the whole mastery page here. Extra stuff like chat and menus is fine; it gets ignored." aria-label="Mastery page text"></textarea>
+      <div class="row">
+        <button class="btn" id="clearBtn" type="button">Clear</button>
+        <button class="btn" id="doneBtn" type="button" hidden>Done pasting</button>
+        <span class="privacy">Your paste stays on your device. Nothing is stored or sent anywhere.</span>
+      </div>
+      <p class="manual-link" id="manualWrap"><button class="linkish" id="manualBtn" type="button">Can't copy the page? Type your numbers in by hand instead.</button></p>
+      </div></div>
+      <div class="status" id="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <div id="results" hidden>
+  <section class="step" aria-labelledby="s2">
+    <div class="step-num" aria-hidden="true">2</div>
+    <div>
+      <h2 id="s2">Your nets</h2>
+      <div class="settings">
+        <div class="card">
+          <h3>Upgrades</h3>
+          <label class="check"><input type="checkbox" id="rn" checked><span>Reinforced Netting <span class="muted">(Supply Shop)</span></span></label>
+          <label class="check"><input type="checkbox" id="trawl"><span>Fishing Trawl <span class="muted">(Tower)</span></span></label>
+          <label class="check" style="align-items:center">Event bonus <input type="number" id="event" min="0" max="500" step="5" value="0" style="width:5em"> %</label>
+          <div class="muted" style="margin-top:6px">Items per Large Net: <span class="per-net" id="perNet">400</span></div>
+        </div>
+        <div class="card">
+          <h3>Count toward</h3>
+          <div class="seg" role="group" aria-label="Goal">
+            <button type="button" data-goal="next" aria-pressed="true">Next milestone</button>
+            <button type="button" data-goal="gm" aria-pressed="false">GMs</button>
+            <button type="button" data-goal="mm" aria-pressed="false">MMs</button>
+          </div>
+          <p class="muted" style="font-size:.9rem">GM is 100,000 caught. MM is 1,000,000.</p>
+          <label class="check" style="align-items:center">Your own budget <input type="number" id="custom" min="0" step="100" placeholder="e.g. 2500"> nets</label>
+        </div>
+        <div class="card" style="grid-column: 1 / -1">
+          <h3>Places you can fish</h3>
+          <div class="locs" id="locs"></div>
+          <p class="muted" style="font-size:.88rem;margin:6px 0 0">Spots with nothing in your paste get switched off automatically. Tick them back on if that's wrong.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s3">
+    <div class="step-num" aria-hidden="true">3</div>
+    <div>
+      <h2 id="s3">Where to spend your nets</h2>
+      <div class="tldr" id="tldr"></div>
+      <p class="muted" id="gridIntro">Each number is how many masteries you'd finish by spending that column's nets at that row's fishing spot.</p>
+      <div class="scroll" id="heatWrap"><table class="heat" id="heat"></table></div>
+      <p class="legend" id="gridLegend">Outlined squares are the best picks from the summary above. Hover a square to see which items it finishes.</p>
+      <div class="recs" id="recs"></div>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s4">
+    <div class="step-num" aria-hidden="true">4</div>
+    <div>
+      <h2 id="s4">Every item, fewest nets first</h2>
+      <p class="muted">Nets are counted at the best spot for each item. Type in the Caught column to fix or fill in a number.</p>
+      <div class="filters">
+        <label>Location <select id="locFilter"></select></label>
+        <label class="check" style="align-items:center"><input type="checkbox" id="showDone"> Show Mega Mastered</label>
+        <label class="check" style="align-items:center"><input type="checkbox" id="showRare"> Show rare drops</label>
+      </div>
+      <div class="scroll"><table class="list" id="list"></table></div>
+    </div>
+  </section>
+
+  </div>
+
+  <footer>
+    Drop rates from <a href="https://buddy.farm" target="_blank" rel="noopener">Buddy's Almanac</a> (snapshot, September 2026). Large Nets catch 250 items, 400 with Reinforced Netting, and 500 with the Fishing Trawl too. Results are averages, so real hauls will wobble a bit. Unofficial fan tool.
+  </footer>
+</div>
+
+<script>
+(function () {
+  // ---------- Data: fishes per drop at each location (buddy.farm) ----------
+  const LOCS = {
+    "Farm Pond": { "Yellow Perch": 4.15, "Drum": 4.15, "Largemouth Bass": 4.15, "Carp": 9.45, "Trout": 9.45, "Catfish": 40.59, "Flier": 50.92, "Fish Bones": 51.00, "Runestone 02": 621.27 },
+    "Forest Pond": { "Largemouth Bass": 3.38, "Drum": 3.38, "Yellow Perch": 3.38, "Bluegill": 12.32, "Fish Bones": 43.17, "Water Lily": 329.17, "Runestone 03": 794.46 },
+    "Lake Tempest": { "Yellow Perch": 4.78, "Largemouth Bass": 4.79, "Drum": 4.79, "Crappie": 4.79, "Trout": 10.69, "Globber": 28.15, "Fish Bones": 57.13, "Flier": 57.18, "Runestone 15": 5257.90 },
+    "Small Island": { "Small Prawn": 2.63, "Mackerel": 6.65, "Green Chromis": 6.65, "Blue Crab": 6.65, "Blue Shell": 14.28, "Blue Sea Bass": 29.41, "Mussel": 36.99, "Jellyfish": 37.01, "MIAB": 150.66, "Seaweed": 283.27 },
+    "Crystal River": { "Sunfish": 2.83, "Bone Fish": 2.83, "Trout": 6.88, "Blue Catfish": 14.70, "Globber": 18.59, "Glass Bottle": 77.01, "Runestone 12": 2780.33 },
+    "Emerald Beach": { "Conch Shell": 3.38, "Clam Shell": 3.38, "Starfish": 7.99, "Red Starfish": 16.94, "Clownfish": 16.95, "Blue Tiger Fish": 25.87, "Pearl": 34.80, "Seahorse": 43.70, "Puffer": 43.72, "Stingray": 43.75, "Ruby Fish": 88.22, "Marlin": 88.37, "MIAB": 177.58, "Spiked Shell": 3537.57, "Crab Claw": 3572.96 },
+    "Vast Ocean": { "Skipjack": 2.16, "Mackerel": 5.74, "Shrimp": 9.10, "Green Jellyfish": 15.75, "Blue Sea Bass": 25.71, "Jellyfish": 32.32, "Fluorifish": 32.35, "Stingray": 32.36, "Ruby Fish": 65.55, "Marlin": 65.63, "Octopus": 98.79, "MIAB": 131.90, "Giant Squid": 131.92, "Sea Dragon": 2649.85, "Runestone 18": 3532.70 },
+    "Lake Minerva": { "Torch Fish": 1.53, "Flamejack": 4.43, "Redgill": 12.37, "Flarefin": 25.54 },
+    "Large Island": { "Swordfish": 4.00, "Barracuda": 5.36, "Sea Catfish": 6.66, "Plumbfish": 7.96, "Spiral Shell": 9.25, "Serpent Eel": 10.53, "Ruby Coral": 11.82 },
+    "Pirate's Cove": { "Purple Butterfly Fish": 4.14, "Crab": 4.94, "Green Barracuda": 6.48, "Mulberry Snapper": 7.99, "Jumbo Fish": 9.50, "Orcafish": 11.00, "Speckled Grouper": 12.50 },
+    "Glacier Lake": { "Frosteye": 4.50, "Crowfish": 5.35, "Bullfish": 6.99, "Glassback": 8.61, "Sea Crest": 10.22, "Seeker": 11.82, "Stone Jelly": 13.42, "Ice Shark": 13.43 }
+  };
+  const LOC_NAMES = Object.keys(LOCS);
+  const RARE_CUTOFF = 200; // items rarer than this everywhere are "rare drops"
+  const BUDGETS = [1000, 3000, 5000, 10000];
+  const GM = 100000, MM = 1000000;
+
+  const ITEMS = {};
+  for (const loc of LOC_NAMES) {
+    for (const [name, rate] of Object.entries(LOCS[loc])) {
+      (ITEMS[name] = ITEMS[name] || { name, locs: [] }).locs.push({ loc, rate });
+    }
+  }
+  for (const it of Object.values(ITEMS)) {
+    it.locs.sort((a, b) => a.rate - b.rate);
+    it.rare = it.locs[0].rate > RARE_CUTOFF;
+  }
+  const norm = s => s.toLowerCase().replace(/[\u2018\u2019`]/g, "'").replace(/\s+/g, " ").trim();
+  const INDEX = {};
+  for (const n of Object.keys(ITEMS)) INDEX[norm(n)] = n;
+
+  // ---------- State ----------
+  const S = {
+    counts: {}, overrides: {}, parsedAny: false, collapsed: [], looksLikeMastery: true, totalRead: 0,
+    manual: false, goal: "next", enabled: new Set(LOC_NAMES), touched: new Set(),
+    sortKey: "next", sortDir: 1, locFilter: "all", showDone: false, showRare: false
+  };
+
+  // ---------- Parsing ----------
+  const toInt = s => parseInt(String(s).replace(/,/g, ""), 10);
+  function parse(text) {
+    const found = {};
+    let total = 0;
+    const put = (rawName, val) => {
+      const canon = INDEX[norm(rawName)];
+      total++;
+      if (!canon || !isFinite(val)) return;
+      found[canon] = Math.max(found[canon] || 0, val);
+    };
+    // Pass 1: name on its own line, "X / Y Progress" on a later line
+    const lines = text.split(/\r?\n/).map(s => s.trim());
+    const progRe = /^([\d,]+)\s*\/\s*([\d,]+|\u221e)\s*Progress/i;
+    for (let i = 0; i < lines.length; i++) {
+      const m = lines[i].match(progRe);
+      if (!m) continue;
+      let j = i - 1;
+      while (j >= 0 && !lines[j]) j--;
+      if (j >= 0) put(lines[j], toInt(m[1]));
+    }
+    // Pass 2: everything squashed onto one line (some phone browsers)
+    const flat = text.replace(/\s+/g, " ");
+    const re = /(?:^|\bStop|\bTrack|Complete!|chevron_down|chevron_right|chevron_up)\s+([^\/%]+?)\s+([\d,]+)\s*\/\s*([\d,]+|\u221e)\s*Progress/g;
+    let m, seen = 0;
+    while ((m = re.exec(flat))) {
+      const nm = m[1].replace(/^.*chevron_\w+\s+/, "").replace(/^(Mega Mastered|Ready to Claim|Nothing ready yet|Mastery In-Progress|Stop Tracking All)\s+/i, "");
+      const canon = INDEX[norm(nm)];
+      if (canon) { found[canon] = Math.max(found[canon] || 0, toInt(m[2])); seen++; }
+    }
+    // A tier only counts as collapsed if it never appears expanded anywhere in the paste
+    const closed = new Set(), open = new Set();
+    const cre = /(Tier\s+[IVX]+(?:\s*\([A-Z]+\))?|No Tier|Mega Mastered)\s*chevron_(right|down|up)/g;
+    while ((m = cre.exec(text))) {
+      const tier = m[1].replace(/\s+/g, " ");
+      (m[2] === "right" ? closed : open).add(tier);
+    }
+    const collapsed = [...closed].filter(t => !open.has(t));
+    const looksLikeMastery = /Progress/.test(text) && /(Mastery In-Progress|Tier\s+[IVX]+|Mastered)/i.test(text);
+    return { found, collapsed, looksLikeMastery, total: Math.max(total, seen) };
+  }
+
+  // ---------- Math ----------
+  const el = id => document.getElementById(id);
+  function perNet() {
+    const base = 250 + (el("rn").checked ? 150 : 0) + (el("trawl").checked ? 100 : 0);
+    const ev = Math.max(0, parseFloat(el("event").value) || 0);
+    return base * (1 + ev / 100);
+  }
+  const current = n => (S.overrides[n] != null ? S.overrides[n] : (S.counts[n] || 0));
+  function target(c) {
+    if (S.goal === "gm") return c < GM ? GM : null;
+    if (S.goal === "mm") return c < MM ? MM : null;
+    return c < GM ? GM : (c < MM ? MM : null);
+  }
+  const netsTo = (c, t, rate, pn) => (t == null || c >= t) ? 0 : Math.ceil((t - c) * rate / pn);
+  const inPlay = it => !it.rare || S.showRare || (S.counts[it.name] || 0) > 0 || S.overrides[it.name] != null;
+  function candidates() {
+    return Object.values(ITEMS).filter(it => inPlay(it) || !it.rare);
+  }
+
+  function singleSpot(loc, budget, pn) {
+    const done = [];
+    for (const [name, rate] of Object.entries(LOCS[loc])) {
+      const it = ITEMS[name];
+      if (it.rare && !inPlay(it)) continue;
+      const c = current(name), t = target(c);
+      if (t == null) continue;
+      if (netsTo(c, t, rate, pn) <= budget) done.push({ name, t });
+    }
+    return done;
+  }
+
+  // Greedy: repeatedly buy the cheapest-per-mastery chunk of nets anywhere
+  function splitPlan(budget, pn) {
+    const spent = {};
+    const locs = LOC_NAMES.filter(l => S.enabled.has(l));
+    const prog = name => {
+      let p = current(name);
+      for (const { loc, rate } of ITEMS[name].locs) if (spent[loc]) p += spent[loc] * pn / rate;
+      return p;
+    };
+    const finished = new Map();
+    let left = budget, guard = 0;
+    while (left > 0 && guard++ < 300) {
+      let best = null;
+      for (const loc of locs) {
+        const needs = [];
+        for (const [name, rate] of Object.entries(LOCS[loc])) {
+          const it = ITEMS[name];
+          if (finished.has(name) || (it.rare && !inPlay(it))) continue;
+          const c0 = current(name), t = target(c0);
+          if (t == null) continue;
+          const p = prog(name);
+          if (p >= t) { finished.set(name, t); continue; }
+          needs.push({ name, n: Math.ceil((t - p) * rate / pn), t });
+        }
+        needs.sort((a, b) => a.n - b.n);
+        needs.forEach((nd, k) => {
+          if (nd.n > left || nd.n <= 0) return;
+          const gets = k + 1, ratio = gets / nd.n;
+          if (!best || ratio > best.ratio || (ratio === best.ratio && gets > best.gets)) {
+            best = { loc, n: nd.n, gets, ratio, names: needs.slice(0, k + 1) };
+          }
+        });
+      }
+      if (!best) break;
+      spent[best.loc] = (spent[best.loc] || 0) + best.n;
+      left -= best.n;
+      best.names.forEach(x => finished.set(x.name, x.t));
+    }
+    return { spent, finished: [...finished].map(([name, t]) => ({ name, t })), left };
+  }
+
+  // ---------- Rendering ----------
+  const fmt = n => Math.round(n).toLocaleString();
+  const tag = t => t === MM ? '<span class="tag mm">MM</span>' : '<span class="tag gm">GM</span>';
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  function budgets() {
+    const b = BUDGETS.slice();
+    const c = parseInt(el("custom").value, 10);
+    if (c > 0 && !b.includes(c)) b.push(c);
+    return b.sort((x, y) => x - y);
+  }
+
+  function missingItems() {
+    const missing = {};
+    for (const loc of LOC_NAMES) {
+      const core = Object.keys(LOCS[loc]).filter(n => !ITEMS[n].rare);
+      if (!core.some(n => S.counts[n] != null)) continue; // spot probably not unlocked
+      core.filter(n => S.counts[n] == null).forEach(n => (missing[n] = true));
+    }
+    return Object.keys(missing);
+  }
+
+  function renderStatus() {
+    const box = el("status");
+    const text = el("paste").value;
+    if (!text.trim()) { box.innerHTML = ""; return; }
+    const parts = [];
+    const nFound = Object.keys(S.counts).length;
+    if (!S.looksLikeMastery || nFound === 0) {
+      parts.push(`<div class="note warn"><strong>That doesn't look like the mastery page.</strong>No mastery lines were found. Make sure you copied from Mastery Progress, with the tiers expanded.</div>`);
+    } else {
+      const mm = Object.keys(S.counts).filter(n => S.counts[n] >= MM).length;
+      parts.push(`<div class="note"><strong>Found ${nFound} fishing items.</strong>${mm} of them are already Mega Mastered.</div>`);
+    }
+    if (S.collapsed.length) {
+      parts.push(`<div class="note warn"><strong>Some dropdowns were closed when you copied: ${S.collapsed.map(esc).join(", ")}.</strong>Open them, copy again, and paste below what's already here. Duplicates are handled.</div>`);
+    }
+    if (nFound > 0) {
+      const list = missingItems();
+      if (list.length) {
+        parts.push(`<div class="note warn"><strong>Missing ${list.length} item${list.length > 1 ? "s" : ""} from places you fish: ${list.map(esc).join(", ")}.</strong>If you've caught these, a dropdown was probably closed. If you haven't, no problem; they count as zero.</div>`);
+      }
+    }
+    box.innerHTML = parts.join("");
+  }
+
+  function renderLocs() {
+    el("locs").innerHTML = LOC_NAMES.map(l =>
+      `<label class="check"><input type="checkbox" data-loc="${esc(l)}" ${S.enabled.has(l) ? "checked" : ""}> ${esc(l)}</label>`).join("");
+    const sel = el("locFilter");
+    sel.innerHTML = `<option value="all">All locations</option>` + LOC_NAMES.map(l => `<option ${S.locFilter === l ? "selected" : ""}>${esc(l)}</option>`).join("");
+  }
+
+  function renderHeat() {
+    const pn = perNet();
+    el("perNet").textContent = fmt(pn);
+    const allBs = budgets();
+    const allLocs = LOC_NAMES.filter(l => S.enabled.has(l));
+    const full = allLocs.map(l => allBs.map(b => singleSpot(l, b, pn)));
+    const colMax = allBs.map((_, j) => Math.max(0, ...full.map(r => r[j].length)));
+
+    // Drop budget columns and spot rows where nothing finishes
+    const cols = allBs.map((b, j) => j).filter(j => colMax[j] > 0);
+    const rows = allLocs.map((l, i) => i).filter(i => cols.some(j => full[i][j].length > 0));
+    const bs = cols.map(j => allBs[j]);
+    const locs = rows.map(i => allLocs[i]);
+    const grid = rows.map(i => cols.map(j => full[i][j]));
+    const maxByCol = cols.map(j => colMax[j]);
+    const overallMax = Math.max(1, ...maxByCol);
+    const empty = !bs.length || !locs.length;
+    ["heatWrap", "gridIntro", "gridLegend"].forEach(id => el(id).classList.toggle("hidden-block", empty));
+
+    let h = `<thead><tr><th scope="col">Spot</th>${bs.map(b => `<th scope="col">${fmt(b)} nets</th>`).join("")}</tr></thead><tbody>`;
+    locs.forEach((l, i) => {
+      h += `<tr><th scope="row">${esc(l)}</th>`;
+      bs.forEach((b, j) => {
+        const d = grid[i][j], n = d.length;
+        const a = n ? 0.12 + 0.5 * (n / overallMax) : 0;
+        const best = n > 0 && n === maxByCol[j];
+        const title = n ? d.map(x => x.name + (x.t === MM ? " (MM)" : " (GM)")).join(", ") : "Nothing finishes";
+        h += `<td class="${n ? "" : "zero"} ${best ? "best" : ""}" style="${n ? `background:rgba(var(--heat),${a.toFixed(2)})` : ""}" title="${esc(title)}">${n || "–"}</td>`;
+      });
+      h += `</tr>`;
+    });
+    el("heat").innerHTML = h + "</tbody>";
+
+    // Summary above the grid: only budgets where something finishes
+    const joinOr = arr => arr.length > 1 ? arr.slice(0, -1).map(esc).join(", ") + " or " + esc(arr[arr.length - 1]) : esc(arr[0]);
+    let tl = bs.map((b, j) => {
+      const top = locs.filter((l, i) => grid[i][j].length === maxByCol[j]);
+      const n = maxByCol[j];
+      return `<div class="pick"><div class="b">${fmt(b)} nets</div><div class="l">${joinOr(top)}</div><div class="n">finishes ${n} master${n === 1 ? "y" : "ies"}</div></div>`;
+    }).join("");
+
+    if (!tl) {
+      // Nothing finishes within any budget: show the closest milestones instead
+      const next = [];
+      for (const it of Object.values(ITEMS)) {
+        if (it.rare && !inPlay(it)) continue;
+        const c = current(it.name), t = target(c);
+        if (t == null) continue;
+        let best = null;
+        for (const { loc, rate } of it.locs) {
+          if (!S.enabled.has(loc)) continue;
+          const n = netsTo(c, t, rate, pn);
+          if (!best || n < best.n) best = { n, loc };
+        }
+        if (best) next.push({ name: it.name, t, ...best });
+      }
+      next.sort((a, b) => a.n - b.n);
+      const top = next.slice(0, 3);
+      if (!allLocs.length) {
+        tl = `<p class="tldr-note">Tick at least one fishing spot in step 2.</p>`;
+      } else if (!top.length) {
+        tl = `<p class="tldr-note">Nothing left to finish at your spots for this goal. Nice work.</p>`;
+      } else {
+        tl = `<p class="tldr-note">Nothing finishes within ${fmt(allBs[allBs.length - 1])} nets, so here's what's closest.</p>` +
+          top.map(x => `<div class="pick"><div class="b">${fmt(x.n)} nets</div><div class="l">${esc(x.name)}${tag(x.t)}</div><div class="n">at ${esc(x.loc)}</div></div>`).join("");
+      }
+    }
+    el("tldr").innerHTML = tl;
+
+    // Detailed cards: skip budgets where nothing finishes
+    el("recs").innerHTML = bs.map((b, j) => {
+      let bestLoc = null, bestList = [];
+      locs.forEach((l, i) => { if (grid[i][j].length > bestList.length) { bestLoc = l; bestList = grid[i][j]; } });
+      const plan = splitPlan(b, pn);
+      let out = `<div class="rec"><div class="budget">${fmt(b)} nets</div>`;
+      out += `<div>Best single spot: <span class="where">${esc(bestLoc)}</span>, finishes ${bestList.length}</div><ul>${bestList.map(x => `<li>${esc(x.name)}${tag(x.t)}</li>`).join("")}</ul>`;
+      if (plan.finished.length > bestList.length) {
+        const where = Object.entries(plan.spent).sort((a, c) => c[1] - a[1]).map(([l, n]) => `${fmt(n)} at ${esc(l)}`).join(", ");
+        out += `<div class="split"><strong>Split it for ${plan.finished.length}:</strong> ${where}.<ul>${plan.finished.map(x => `<li>${esc(x.name)}${tag(x.t)}</li>`).join("")}</ul>${plan.left > 0 ? `<div class="muted">${fmt(plan.left)} nets left over.</div>` : ""}</div>`;
+      }
+      return out + `</div>`;
+    }).join("");
+  }
+
+  function renderList() {
+    const pn = perNet();
+    const filt = S.locFilter;
+    const rows = [];
+    for (const it of Object.values(ITEMS)) {
+      if (it.rare && !inPlay(it)) continue;
+      let locs = it.locs.filter(x => S.enabled.has(x.loc) || filt === x.loc);
+      if (filt !== "all") locs = it.locs.filter(x => x.loc === filt);
+      if (!locs.length) continue;
+      const c = current(it.name);
+      if (c >= MM && !S.showDone) continue;
+      const main = locs[0] || null;
+      const gm = main ? netsTo(c, GM, main.rate, pn) : null;
+      const mm = main ? netsTo(c, MM, main.rate, pn) : null;
+      const t = target(c);
+      const next = main && t != null ? netsTo(c, t, main.rate, pn) : Infinity;
+      rows.push({ it, c, main, gm, mm, next, alts: filt === "all" ? locs.slice(1) : [] });
+    }
+    const k = S.sortKey, d = S.sortDir;
+    // Items already past a goal ("Done") sort after every real number, and items with no spot sort last
+    const netsKey = n => n == null ? 2e15 : n === 0 ? 1e15 : n;
+    const val = r => k === "name" ? r.it.name : k === "loc" ? (r.main ? r.main.loc : "~") : k === "current" ? r.c : k === "gm" ? netsKey(r.gm) : k === "mm" ? netsKey(r.mm) : (r.next === Infinity ? 2e15 : r.next);
+    rows.sort((a, b) => {
+      const x = val(a), y = val(b);
+      const cmp = typeof x === "string" ? x.localeCompare(y) : (x - y);
+      return cmp ? cmp * d : (Math.min(a.next, 2e15) - Math.min(b.next, 2e15)) || a.it.name.localeCompare(b.it.name);
+    });
+    const th = (key, label, cls = "") => {
+      const on = S.sortKey === key;
+      const sortAttr = on ? (S.sortDir > 0 ? "ascending" : "descending") : "none";
+      return `<th scope="col" class="${cls}" aria-sort="${sortAttr}"><button type="button" data-sort="${key}">${label}${on ? (S.sortDir > 0 ? " ▲" : " ▼") : ""}</button></th>`;
+    };
+    let h = `<thead><tr>${th("name", "Item")}${th("current", "Caught", "num")}${th("loc", "Best spot")}${th("gm", "Nets to GM", "num")}${th("mm", "Nets to MM", "num")}<th scope="col">Also at</th></tr></thead><tbody>`;
+    if (!rows.length) h += `<tr><td colspan="6" class="muted">Nothing to show with these filters.</td></tr>`;
+    for (const r of rows) {
+      const nf = S.parsedAny && S.counts[r.it.name] == null && S.overrides[r.it.name] == null;
+      const cell = n => n == null ? "–" : n === 0 ? "Done" : fmt(n);
+      h += `<tr class="${r.c >= MM ? "done" : ""}"><td>${esc(r.it.name)}${nf ? '<span class="tag nf" title="Not found in your paste">not found</span>' : ""}</td>` +
+        `<td class="num"><input type="number" min="0" step="1" value="${r.c}" data-item="${esc(r.it.name)}" aria-label="${esc(r.it.name)} caught"></td>` +
+        `<td>${r.main ? esc(r.main.loc) : '<span class="muted">spot switched off</span>'}</td>` +
+        `<td class="num">${cell(r.gm)}</td><td class="num">${cell(r.mm)}</td>` +
+        `<td class="alt">${r.alts.map(a => `${esc(a.loc)}: ${fmt(netsTo(r.c, target(r.c) ?? MM, a.rate, pn))}`).join("<br>") || ""}</td></tr>`;
+    }
+    el("list").innerHTML = h + "</tbody>";
+  }
+
+  function renderAll() {
+    renderStatus();
+    const show = S.parsedAny || S.manual;
+    const box = el("results");
+    if (show && box.hidden) { box.hidden = false; box.classList.remove("reveal"); void box.offsetWidth; box.classList.add("reveal"); }
+    if (!show) box.hidden = true;
+    el("manualWrap").hidden = show;
+    if (!show) return;
+    renderHeat(); renderList();
+  }
+
+  // ---------- Copy instructions ----------
+  const HOWTO = {
+    win: `<ol><li>On the mastery page, click an empty spot on the page, then press <kbd>Ctrl</kbd>+<kbd>A</kbd> to select everything.</li><li>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy.</li><li>Click the box below and press <kbd>Ctrl</kbd>+<kbd>V</kbd>.</li></ol>`,
+    mac: `<ol><li>On the mastery page, click an empty spot on the page, then press <kbd>⌘ Cmd</kbd>+<kbd>A</kbd>.</li><li>Press <kbd>⌘ Cmd</kbd>+<kbd>C</kbd> to copy.</li><li>Click the box below and press <kbd>⌘ Cmd</kbd>+<kbd>V</kbd>.</li></ol>`,
+    android: `<ol><li>Open farmrpg.com in Chrome (not the app) and go to the mastery page.</li><li>Press and hold on any item name, then tap <strong>Select all</strong> and <strong>Copy</strong>.</li><li>Press and hold in the box below and tap <strong>Paste</strong>.</li></ol>`,
+    ios: `<ol><li>Open farmrpg.com in Safari (not the app) and go to the mastery page.</li><li>Press and hold on an item name. If <strong>Select All</strong> appears, tap it. If not, drag the blue handles from the top of the list to the bottom.</li><li>Tap <strong>Copy</strong>, then press and hold in the box below and tap <strong>Paste</strong>. You can paste in chunks; duplicates are handled.</li></ol>`
+  };
+  function setOS(os) {
+    document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.os === os)));
+    el("howto").innerHTML = HOWTO[os];
+  }
+  const ua = navigator.userAgent;
+  setOS(/iPhone|iPad|iPod/.test(ua) ? "ios" : /Android/.test(ua) ? "android" : /Mac/.test(ua) ? "mac" : "win");
+  document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("button[data-os]"); if (b) setOS(b.dataset.os); });
+
+  // ---------- Events ----------
+  let t, collapseTimer;
+  function setCollapsed(on) {
+    const area = el("pasteArea");
+    area.classList.toggle("closed", on);
+    on ? area.setAttribute("inert", "") : area.removeAttribute("inert");
+    el("status").hidden = on;
+    el("loaded").hidden = !on;
+    if (on) {
+      const n = Object.keys(S.counts).length;
+      const mm = Object.keys(S.counts).filter(k => S.counts[k] >= MM).length;
+      const miss = missingItems().length;
+      el("loadedText").textContent = `Loaded ${n} fishing items` + (mm ? `, ${mm} already Mega Mastered` : "") + "." + (miss ? ` ${miss} not found, counted as zero.` : "");
+    } else {
+      const ta = el("paste");
+      ta.focus({ preventScroll: true });
+      ta.select(); // pasting now replaces the old text
+    }
+  }
+  function onPaste() {
+    const text = el("paste").value;
+    const r = parse(text);
+    S.counts = r.found; S.collapsed = r.collapsed; S.looksLikeMastery = r.looksLikeMastery;
+    S.parsedAny = Object.keys(r.found).length > 0;
+    S.overrides = {};
+    if (S.parsedAny) {
+      for (const l of LOC_NAMES) {
+        if (S.touched.has(l)) continue;
+        const any = Object.keys(LOCS[l]).some(n => r.found[n] != null);
+        any ? S.enabled.add(l) : S.enabled.delete(l);
+      }
+    } else {
+      LOC_NAMES.forEach(l => { if (!S.touched.has(l)) S.enabled.add(l); });
+    }
+    renderLocs(); renderAll();
+    el("doneBtn").hidden = !S.parsedAny;
+    clearTimeout(collapseTimer);
+    if (S.parsedAny && !S.collapsed.length && !missingItems().length) {
+      collapseTimer = setTimeout(() => setCollapsed(true), 450);
+    }
+  }
+  el("updateBtn").addEventListener("click", () => setCollapsed(false));
+  el("doneBtn").addEventListener("click", () => setCollapsed(true));
+  el("paste").addEventListener("input", () => { clearTimeout(t); t = setTimeout(onPaste, 250); });
+  el("clearBtn").addEventListener("click", () => { el("paste").value = ""; S.touched.clear(); S.manual = false; onPaste(); el("paste").focus(); });
+  el("manualBtn").addEventListener("click", () => {
+    S.manual = true;
+    LOC_NAMES.forEach(l => S.enabled.add(l));
+    renderLocs(); renderAll();
+    el("s4").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  });
+  ["rn", "trawl", "event", "custom"].forEach(id => el(id).addEventListener("input", renderAll));
+  document.querySelector(".seg").addEventListener("click", e => {
+    const b = e.target.closest("button[data-goal]"); if (!b) return;
+    S.goal = b.dataset.goal;
+    document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    renderAll();
+  });
+  el("locs").addEventListener("change", e => {
+    const l = e.target.dataset.loc; if (!l) return;
+    S.touched.add(l);
+    e.target.checked ? S.enabled.add(l) : S.enabled.delete(l);
+    renderAll();
+  });
+  el("locFilter").addEventListener("change", e => { S.locFilter = e.target.value; renderList(); });
+  el("showDone").addEventListener("change", e => { S.showDone = e.target.checked; renderList(); });
+  el("showRare").addEventListener("change", e => { S.showRare = e.target.checked; renderAll(); });
+  el("list").addEventListener("click", e => {
+    const b = e.target.closest("button[data-sort]"); if (!b) return;
+    const k = b.dataset.sort;
+    if (S.sortKey === k) S.sortDir *= -1; else { S.sortKey = k; S.sortDir = 1; }
+    renderList();
+  });
+  el("list").addEventListener("change", e => {
+    const name = e.target.dataset.item; if (!name) return;
+    const v = parseInt(e.target.value, 10);
+    S.overrides[name] = isFinite(v) && v >= 0 ? v : 0;
+    renderAll();
+  });
+
+  // ---------- Theme ----------
+  const root = document.documentElement;
+  const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const syncBtn = () => { el("themeBtn").textContent = isDark() ? "Light mode" : "Dark mode"; };
+  try { const saved = localStorage.getItem("netplanner-theme"); if (saved) root.dataset.theme = saved; } catch (e) {}
+  el("themeBtn").addEventListener("click", () => {
+    root.dataset.theme = isDark() ? "light" : "dark";
+    try { localStorage.setItem("netplanner-theme", root.dataset.theme); } catch (e) {}
+    syncBtn();
+  });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncBtn);
+  syncBtn();
+
+  renderLocs(); renderAll();
+  window.__netPlanner = { parse, ITEMS, LOCS };
+})();
+</script>
+</body>
+</html>
