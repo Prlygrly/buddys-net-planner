@@ -487,11 +487,20 @@ footer a { color: inherit; }
     return b.sort((x, y) => x - y);
   }
 
+  // A spot looks unlocked if at least half its own fish have been caught.
+  // Fish shared with other spots don't count, and one stray fish (say, from a chest) isn't enough.
+  function spotUnlocked(loc, counts) {
+    const core = Object.keys(LOCS[loc]).filter(n => !ITEMS[n].rare);
+    const own = core.filter(n => ITEMS[n].locs.length === 1);
+    const basis = own.length ? own : core;
+    return basis.filter(n => (counts[n] || 0) > 0).length >= Math.ceil(basis.length / 2);
+  }
+
   function missingItems() {
     const missing = {};
     for (const loc of LOC_NAMES) {
       const core = Object.keys(LOCS[loc]).filter(n => !ITEMS[n].rare);
-      if (!core.some(n => S.counts[n] != null)) continue; // spot probably not unlocked
+      if (!spotUnlocked(loc, S.counts)) continue; // spot probably not unlocked
       core.filter(n => S.counts[n] == null).forEach(n => (missing[n] = true));
     }
     return Object.keys(missing);
@@ -712,8 +721,7 @@ footer a { color: inherit; }
     if (S.parsedAny) {
       for (const l of LOC_NAMES) {
         if (S.touched.has(l)) continue;
-        const any = Object.keys(LOCS[l]).some(n => r.found[n] != null);
-        any ? S.enabled.add(l) : S.enabled.delete(l);
+        spotUnlocked(l, r.found) ? S.enabled.add(l) : S.enabled.delete(l);
       }
     } else {
       LOC_NAMES.forEach(l => { if (!S.touched.has(l)) S.enabled.add(l); });
