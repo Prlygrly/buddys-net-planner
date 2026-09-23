@@ -29,7 +29,7 @@ Nets needed = ceil((target − current) × fishesPerDrop ÷ fishPerNet).
 ## Page behaviour
 - Only step 1 shows until a paste yields mastery data, or the player clicks "Type your numbers in by hand".
 - When every expected fish is found and no tier is collapsed, the paste area folds up (CSS grid-rows animation) into a "Loaded N items" bar with an **Update masteries** button that reopens it with the old text selected. A **Done pasting** button forces the collapse.
-- Fishing spots with no items in the paste switch off automatically. The missing-fish warning only covers spots where at least one item was found.
+- Fishing spots switch off automatically unless `spotUnlocked()` passes: at least half of the spot's own (non-rare, found only at that spot) fish have a count above 0. One stray catch, like a Stone Jelly from elsewhere, doesn't unlock Glacier Lake. The missing-fish warning only covers unlocked spots.
 - Step 3: a TL;DR row of best-spot cards per budget (1k/3k/5k/10k plus an optional custom one), shown only for budgets where something finishes. If nothing finishes, it shows the three closest milestones instead. The heat grid drops empty rows and columns and hides entirely when empty. The recommendation cards include a greedy "split your nets" plan when it beats one spot.
 - Step 4: a table of every item, sortable, with a location filter. "Done" sorts as the highest value in the nets columns. The Caught column is editable, and edits reset on a new paste.
 - Respect `prefers-reduced-motion`.
