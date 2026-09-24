@@ -32,6 +32,7 @@ Nets needed = ceil((target − current) × fishesPerDrop ÷ fishPerNet).
 - Fishing spots switch off automatically unless `spotUnlocked()` passes: at least half of the spot's own (non-rare, found only at that spot) fish have a count above 0. One stray catch, like a Stone Jelly from elsewhere, doesn't unlock Glacier Lake. The missing-fish warning only covers unlocked spots.
 - Step 3: a TL;DR row of best-spot cards per budget (1k/3k/5k/10k plus an optional custom one), shown only for budgets where something finishes. If nothing finishes, it shows the three closest milestones instead. The heat grid drops empty rows and columns and hides entirely when empty. The recommendation cards include a greedy "split your nets" plan when it beats one spot.
 - Step 4: a table of every item, sortable, with a location filter. "Done" sorts as the highest value in the nets columns. The Caught column is editable, and edits reset on a new paste.
+- **Upload saved page** (for Android, where Chrome refuses to copy; iOS untested): `savedPageToText()` turns a Chrome `.mht`/`.mhtml` (or Safari `.webarchive`, untested) back into line text for `parse()`. Read on-device only; 20 MB cap. Saved pages contain the player's username and recent chat, so never commit a sample file.
 - Respect `prefers-reduced-motion`.
 
 ## Testing

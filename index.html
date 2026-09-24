@@ -245,10 +245,10 @@ footer a { color: inherit; }
       <textarea id="paste" placeholder="Paste the whole mastery page here. Extra stuff like chat and menus is fine; it gets ignored." aria-label="Mastery page text"></textarea>
       <div class="row">
         <button class="btn" id="fileBtn" type="button">Upload saved page</button>
-        <input type="file" id="fileIn" accept=".mht,.mhtml,.html,.htm,multipart/related,message/rfc822,text/html" hidden>
+        <input type="file" id="fileIn" accept=".mht,.mhtml,.webarchive,.html,.htm,multipart/related,message/rfc822,application/x-webarchive,text/html" hidden>
         <button class="btn" id="clearBtn" type="button">Clear</button>
         <button class="btn" id="doneBtn" type="button" hidden>Done pasting</button>
-        <span class="privacy">Your paste or file stays on your device. Nothing is stored or sent anywhere.</span>
+        <span class="privacy">Your paste or file is read right here in your browser. It never gets uploaded to this site or saved anywhere, not even as a cookie. The saved page has no passwords or login details, and the planner only reads fish names and numbers.</span>
       </div>
       <p class="manual-link" id="manualWrap"><button class="linkish" id="manualBtn" type="button">Can't copy the page? Type your numbers in by hand instead.</button></p>
       </div></div>
@@ -698,8 +698,8 @@ footer a { color: inherit; }
   const HOWTO = {
     win: `<ol><li>On the mastery page, click an empty spot on the page, then press <kbd>Ctrl</kbd>+<kbd>A</kbd> to select everything.</li><li>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy.</li><li>Click the box below and press <kbd>Ctrl</kbd>+<kbd>V</kbd>.</li></ol>`,
     mac: `<ol><li>On the mastery page, click an empty spot on the page, then press <kbd>⌘ Cmd</kbd>+<kbd>A</kbd>.</li><li>Press <kbd>⌘ Cmd</kbd>+<kbd>C</kbd> to copy.</li><li>Click the box below and press <kbd>⌘ Cmd</kbd>+<kbd>V</kbd>.</li></ol>`,
-    android: `<p style="margin:0 0 6px">Copying doesn't work on Android, so save the page as a file instead.</p><ol><li>Open farmrpg.com in Chrome (not the app) and go to the mastery page.</li><li>Tap the <strong>⋮</strong> menu at the top right, then tap the <strong>⬇ Download</strong> arrow. Chrome saves the page as a file.</li><li>Come back here, tap <strong>Upload saved page</strong> below, and pick that file. It's usually in <strong>Downloads</strong> and ends in <strong>.mhtml</strong>.</li></ol>`,
-    ios: `<ol><li>Open farmrpg.com in Safari (not the app) and go to the mastery page.</li><li>Press and hold on an item name. If <strong>Select All</strong> appears, tap it. If not, drag the blue handles from the top of the list to the bottom.</li><li>Tap <strong>Copy</strong>, then press and hold in the box below and tap <strong>Paste</strong>. You can paste in chunks; duplicates are handled.</li></ol>`
+    android: `<p style="margin:0 0 6px">Copying doesn't work on Android, so save the page as a file instead.</p><ol><li>Open farmrpg.com in Chrome (not the app) and go to the mastery page.</li><li>Tap the <strong>⋮</strong> menu at the top right, then tap the <strong>⬇ Download</strong> arrow. Chrome saves the page as a file.</li><li>Come back here, tap <strong>Upload saved page</strong> below, and pick that file. It's usually in <strong>Downloads</strong> and ends in <strong>.mht</strong> or <strong>.mhtml</strong>.</li></ol>`,
+    ios: `<p style="margin:0 0 6px"><strong>Heads up:</strong> this hasn't been tested on iPhone or iPad yet. Try copying first. If that doesn't work, save the page as a file.</p><p style="margin:6px 0 2px"><strong>Copy and paste</strong></p><ol><li>Open farmrpg.com in Safari (not the app) and go to the mastery page.</li><li>Press and hold on an item name. If <strong>Select All</strong> appears, tap it. If not, drag the blue handles from the top of the list to the bottom.</li><li>Tap <strong>Copy</strong>, then press and hold in the box below and tap <strong>Paste</strong>. You can paste in chunks; duplicates are handled.</li></ol><p style="margin:10px 0 2px"><strong>Or save the page as a file</strong></p><ol><li>On the mastery page in Safari, tap the <strong>Share</strong> button (the square with an arrow pointing up).</li><li>At the top of the share menu, tap <strong>Options</strong>, choose <strong>Web Archive</strong>, then tap <strong>Done</strong>.</li><li>Tap <strong>Save to Files</strong> and save it somewhere easy to find.</li><li>Come back here, tap <strong>Upload saved page</strong> below, and pick that file.</li></ol>`
   };
   function setOS(os) {
     document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.os === os)));
@@ -756,7 +756,7 @@ footer a { color: inherit; }
   el("fileIn").addEventListener("change", e => {
     const f = e.target.files[0]; e.target.value = "";
     if (!f) return;
-    if (f.size > 40e6) { el("status").innerHTML = `<div class="note warn"><strong>That file is too big.</strong>Pick the page you saved from Mastery Progress. It's usually under 10 MB.</div>`; return; }
+    if (f.size > 20e6) { el("status").innerHTML = `<div class="note warn"><strong>That file is too big.</strong>Pick the page you saved from Mastery Progress. It's usually under 10 MB.</div>`; return; }
     f.text().then(raw => {
       el("paste").value = savedPageToText(raw);
       clearTimeout(t); onPaste();
