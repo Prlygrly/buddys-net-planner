@@ -244,9 +244,11 @@ footer a { color: inherit; }
       <div class="howto" id="howto" role="tabpanel"></div>
       <textarea id="paste" placeholder="Paste the whole mastery page here. Extra stuff like chat and menus is fine; it gets ignored." aria-label="Mastery page text"></textarea>
       <div class="row">
+        <button class="btn" id="fileBtn" type="button">Upload saved page</button>
+        <input type="file" id="fileIn" accept=".mht,.mhtml,.html,.htm,multipart/related,message/rfc822,text/html" hidden>
         <button class="btn" id="clearBtn" type="button">Clear</button>
         <button class="btn" id="doneBtn" type="button" hidden>Done pasting</button>
-        <span class="privacy">Your paste stays on your device. Nothing is stored or sent anywhere.</span>
+        <span class="privacy">Your paste or file stays on your device. Nothing is stored or sent anywhere.</span>
       </div>
       <p class="manual-link" id="manualWrap"><button class="linkish" id="manualBtn" type="button">Can't copy the page? Type your numbers in by hand instead.</button></p>
       </div></div>
@@ -401,6 +403,20 @@ footer a { color: inherit; }
     const collapsed = [...closed].filter(t => !open.has(t));
     const looksLikeMastery = /Progress/.test(text) && /(Mastery In-Progress|Tier\s+[IVX]+|Mastered)/i.test(text);
     return { found, collapsed, looksLikeMastery, total: Math.max(total, seen) };
+  }
+
+  // Saved page (.mht/.mhtml/.html from Chrome's Download): turn its HTML back into
+  // the same line-per-thing text a copy would give, so parse() handles both.
+  function savedPageToText(raw) {
+    const start = raw.search(/<html[\s>]/i);
+    const end = raw.indexOf("</html>", start);
+    let html = start < 0 ? raw : raw.slice(start, end < 0 ? undefined : end);
+    html = html.replace(/<(script|style|svg)[\s\S]*?<\/\1>/gi, "")
+      .replace(/<br\s*\/?>|<\/(div|li|p|strong|span|h\d|tr|a|button)>/gi, "\n")
+      .replace(/<[^>]*>/g, " ");
+    const dec = document.createElement("textarea");
+    dec.innerHTML = html;
+    return dec.value.split("\n").map(s => s.trim()).filter(Boolean).join("\n");
   }
 
   // ---------- Math ----------
@@ -682,7 +698,7 @@ footer a { color: inherit; }
   const HOWTO = {
     win: `<ol><li>On the mastery page, click an empty spot on the page, then press <kbd>Ctrl</kbd>+<kbd>A</kbd> to select everything.</li><li>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy.</li><li>Click the box below and press <kbd>Ctrl</kbd>+<kbd>V</kbd>.</li></ol>`,
     mac: `<ol><li>On the mastery page, click an empty spot on the page, then press <kbd>⌘ Cmd</kbd>+<kbd>A</kbd>.</li><li>Press <kbd>⌘ Cmd</kbd>+<kbd>C</kbd> to copy.</li><li>Click the box below and press <kbd>⌘ Cmd</kbd>+<kbd>V</kbd>.</li></ol>`,
-    android: `<ol><li>Open farmrpg.com in Chrome (not the app) and go to the mastery page.</li><li>Press and hold on any item name, then tap <strong>Select all</strong> and <strong>Copy</strong>.</li><li>Press and hold in the box below and tap <strong>Paste</strong>.</li></ol>`,
+    android: `<p style="margin:0 0 6px">Copying doesn't work on Android, so save the page as a file instead.</p><ol><li>Open farmrpg.com in Chrome (not the app) and go to the mastery page.</li><li>Tap the <strong>⋮</strong> menu at the top right, then tap the <strong>⬇ Download</strong> arrow. Chrome saves the page as a file.</li><li>Come back here, tap <strong>Upload saved page</strong> below, and pick that file. It's usually in <strong>Downloads</strong> and ends in <strong>.mhtml</strong>.</li></ol>`,
     ios: `<ol><li>Open farmrpg.com in Safari (not the app) and go to the mastery page.</li><li>Press and hold on an item name. If <strong>Select All</strong> appears, tap it. If not, drag the blue handles from the top of the list to the bottom.</li><li>Tap <strong>Copy</strong>, then press and hold in the box below and tap <strong>Paste</strong>. You can paste in chunks; duplicates are handled.</li></ol>`
   };
   function setOS(os) {
@@ -736,6 +752,16 @@ footer a { color: inherit; }
   el("updateBtn").addEventListener("click", () => setCollapsed(false));
   el("doneBtn").addEventListener("click", () => setCollapsed(true));
   el("paste").addEventListener("input", () => { clearTimeout(t); t = setTimeout(onPaste, 250); });
+  el("fileBtn").addEventListener("click", () => el("fileIn").click());
+  el("fileIn").addEventListener("change", e => {
+    const f = e.target.files[0]; e.target.value = "";
+    if (!f) return;
+    if (f.size > 40e6) { el("status").innerHTML = `<div class="note warn"><strong>That file is too big.</strong>Pick the page you saved from Mastery Progress. It's usually under 10 MB.</div>`; return; }
+    f.text().then(raw => {
+      el("paste").value = savedPageToText(raw);
+      clearTimeout(t); onPaste();
+    });
+  });
   el("clearBtn").addEventListener("click", () => { el("paste").value = ""; S.touched.clear(); S.manual = false; onPaste(); el("paste").focus(); });
   el("manualBtn").addEventListener("click", () => {
     S.manual = true;
@@ -786,7 +812,7 @@ footer a { color: inherit; }
   syncBtn();
 
   renderLocs(); renderAll();
-  window.__netPlanner = { parse, ITEMS, LOCS };
+  window.__netPlanner = { parse, savedPageToText, ITEMS, LOCS };
 })();
 </script>
 </body>
