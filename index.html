@@ -73,6 +73,7 @@ h1, h2, h3 {
   margin: 0;
 }
 .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+:root { --tm-bg: var(--surface); --tm-ink: var(--ink); --tm-line: var(--line); }
 header.top {
   display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
   padding: 36px 0 24px;
@@ -220,7 +221,10 @@ footer a { color: inherit; }
       <h1>Large Net Mastery Planner</h1>
       <p class="lede">Paste your FarmRPG mastery page and see how many Grand and Mega Masteries your Large Nets can buy, and where to throw them.</p>
     </div>
-    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark mode">Dark mode</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark mode">Dark mode</button>
+      <span id="tools-menu"></span>
+    </div>
   </header>
 
   <section class="step" aria-labelledby="s1">
@@ -321,6 +325,7 @@ footer a { color: inherit; }
   </footer>
 </div>
 
+<script src="https://prlygrly.github.io/FarmRPG-Next-Steps/tools-menu.js" defer></script>
 <script>
 (function () {
   // ---------- Data: fishes per drop at each location (buddy.farm) ----------
